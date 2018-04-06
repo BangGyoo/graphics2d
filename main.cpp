@@ -17,16 +17,16 @@ void keyboard(unsigned char key, int x, int y)
 	switch (key)
 	{
 	case 'w':
-		xPos.y += 1.0f;
+		xPos.y += 3.0f;
 		break;
 	case 'a':
-		xPos.x -= 1.0f;
+		xPos.x -= 3.0f;
 		break;
 	case 's':
-		xPos.y -= 1.0f;
+		xPos.y -= 3.0f;
 		break;
 	case 'd':
-		xPos.x += 1.0f;
+		xPos.x += 3.0f;
 		break;
 	case VK_SPACE:
 		if (rot == 1) rot = 0;
@@ -57,25 +57,21 @@ void loop(void)
 	glutPostRedisplay();
 }
 
+
+
 void render(void)
 {
 	FrameBuffer::Clear(255, 255, 255);
 
 	//Put your rendering code here
-	Vector pScale, pTranslate;
 	Vector points[4];
-	Matrix mScale, mRotate, mTranslate;
 	
-	pScale.x = 8;
-	pScale.y = 8;
-	pTranslate = xPos;
+	Matrix mScale_1(Matrix::scale, 8, 8);
+	Matrix mRotate_1(Matrix::rotate, (float)(0.0f * DEG_TO_RAD));
+	Matrix mTranslate_1(Matrix::translate, xPos);
 
-	mScale = Scale(pScale);
-	mRotate = Rotate(0.0f * DEG_TO_RAD);
-	mTranslate = Translate(pTranslate);
-
-	Matrix result = mTranslate * mRotate;
-	result = result * mScale;
+	Matrix result = mTranslate_1 * mRotate_1;
+	result = result * mScale_1;
 
 	points[0] = result * pCross[0]; points[1] = result * pCross[1];
 	points[2] = result * pCross[2]; points[3] = result * pCross[3];
@@ -86,19 +82,17 @@ void render(void)
 	Color c;
 	c.r = 255, c.g = 128, c.b = 0;
 
-
 	DrawLine(points[0], points[2], c);
 	DrawLine(points[1], points[3], c);
+
 	// Object 2
-	pScale.x = 60, pScale.y = 20;
-	pTranslate.x = 100 + xPos.x, pTranslate.y = 100 + xPos.y;
 
-	mScale = Scale(pScale);
-	mRotate = Rotate(ang2 * DEG_TO_RAD);
-	mTranslate = Translate(pTranslate);
+	Matrix mScale_2(Matrix::scale,60,20);
+	Matrix mRotate_2 = Rotate(ang2 * DEG_TO_RAD);
+	Matrix mTranslate_2(Matrix::translate, 100 + xPos.x , 100 + xPos.y);
 
-	result = mTranslate * mRotate;
-	result = result * mScale;
+	result =  mTranslate_2 * mRotate_2;
+	result = result * mScale_2;
 
 	points[0] = result * pSquare[0];
 	points[1] = result * pSquare[1];
@@ -118,15 +112,13 @@ void render(void)
 
 	if (rot) ang2 += (1);
 	// Object 3
-	pScale.x = 10, pScale.y = 100;
-	pTranslate.x = -100 + xPos.x, pTranslate.y = 100 + xPos.y;
+	
+	Matrix mScale_3(Matrix::scale,10,100);
+	Matrix mRotate_3(Matrix::rotate, ang3 * DEG_TO_RAD);
+	Matrix mTranslate_3(Matrix::translate, -100 + xPos.x, 100 + xPos.y);
 
-	mScale = Scale(pScale);
-	mRotate = Rotate(ang3 * DEG_TO_RAD);
-	mTranslate = Translate(pTranslate);
-
-	result = mTranslate * mRotate;
-	result = result * mScale;
+	result = mTranslate_3 * mRotate_3;
+	result = result * mScale_3;
 
 	points[0] = result * pTriangle[0];
 	points[1] = result * pTriangle[1];
@@ -143,15 +135,13 @@ void render(void)
 
 	if (rot) ang3 += (-1);
 	// Object 4
-	pScale.x = 110, pScale.y = 50;
-	pTranslate.x = 100 + xPos.x, pTranslate.y = -100 + xPos.y;
+	
+	Matrix mScale_4(Matrix::scale, 110, 50);
+	Matrix mRotate_4(Matrix::rotate,ang4 * DEG_TO_RAD);
+	Matrix mTranslate_4(Matrix::translate, 100 + xPos.x, -100 + xPos.y);
 
-	mScale = Scale(pScale);
-	mRotate = Rotate(ang4 * DEG_TO_RAD);
-	mTranslate = Translate(pTranslate);
-
-	result = matmatMul(mTranslate, mRotate);
-	result = matmatMul(result, mScale);
+	result = mTranslate_4 * mRotate_4;
+	result = result * mScale_4;
 
 	points[0] = result * pTriangle[0];
 	points[1] = result * pTriangle[1];
@@ -168,15 +158,13 @@ void render(void)
 
 	if (rot) ang4 += (1);
 	// Object 5
-	pScale.x = 100, pScale.y = 25;
-	pTranslate.x = -100 + xPos.x, pTranslate.y = -100 + xPos.y;
 
-	mScale = Scale(pScale);
-	mRotate = Rotate(ang5 * DEG_TO_RAD);
-	mTranslate = Translate(pTranslate);
+	Matrix mScale_5(Matrix::scale, 100, 25);
+	Matrix mRotate_5(Matrix::rotate, ang5 * DEG_TO_RAD);
+	Matrix mTranslate_5(Matrix::translate,-100+xPos.x,-100 + xPos.y);
 
-	result = mTranslate * mRotate;
-	result = result * mScale;
+	result = mTranslate_5 * mRotate_5;
+	result = result * mScale_5;
 
 	points[0] = result * pSquare[0];
 	points[1] = result * pSquare[1];
@@ -216,7 +204,7 @@ int main (int argc, char **argv)
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-	glutInitWindowPosition(100, 100);
+	glutInitWindowPosition(1000, 400);
 	glutInitWindowSize(WIDTH, HEIGHT);
 	winID = glutCreateWindow("CS200");
 

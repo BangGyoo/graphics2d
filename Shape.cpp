@@ -126,6 +126,48 @@ void DrawLine(Point start, Point end, Color c) {
 		drawHDLine(x0, y0, x1, y1, c);
 	}
 }
+
+Matrix::Matrix(TransformMat setting, float args_1, float args_2) {
+	Vector xy;
+
+	switch (setting) {
+	case scale :
+		xy.x = args_1; xy.y = args_2;
+		*this = Scale(xy);
+		break;
+	case translate:
+		xy.x = args_1; xy.y = args_2;
+		*this = Translate(xy);
+		break;
+	case normal:
+		break;
+	}
+}
+Matrix::Matrix(TransformMat setting, float args) {
+	Vector xy;
+
+	switch (setting) {
+	case rotate:
+		*this = Rotate(args);
+		break;
+	case normal:
+		break;
+	}
+}
+
+Matrix::Matrix(TransformMat setting, Point args) {
+
+	switch (setting) {
+	case scale :
+		*this = Scale(args);
+		break;
+	case translate :
+		*this = Translate(args);
+		break;
+	}
+}
+
+
 Vector Matrix::operator*(Vector &point) {
 	Vector result;
 

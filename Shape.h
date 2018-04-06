@@ -18,6 +18,13 @@ class Line {
 
 class Matrix {
 public:
+	enum TransformMat {
+		normal,
+		scale,
+		rotate,
+		translate
+	};
+
 	float m[3][3];
 	Matrix() {
 		for (int i = 0; i < 3; i++) {
@@ -26,6 +33,11 @@ public:
 			}
 		}
 	}
+	Matrix(TransformMat setting, float args_1, float args_2);
+	Matrix(TransformMat setting, float args);
+	Matrix(TransformMat setting, Point args);
+	
+
 	Vector operator*(Vector &point);
 	Matrix operator*(Matrix &m);
 };
