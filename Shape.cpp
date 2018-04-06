@@ -126,6 +126,30 @@ void DrawLine(Point start, Point end, Color c) {
 		drawHDLine(x0, y0, x1, y1, c);
 	}
 }
+Vector Matrix::operator*(Vector &point) {
+	Vector result;
+
+	result.x = this->m[0][0] * point.x + this->m[0][1] * point.y + this->m[0][2];
+	result.y = this->m[1][0] * point.x + this->m[1][1] * point.y + this->m[1][2];
+	float w = this->m[2][0] * point.x + this->m[2][1] * point.y + this->m[2][2];
+
+	result.x /= w;
+	result.y /= w;
+
+	return result;
+}
+Matrix Matrix::operator*(Matrix &m) {
+	Matrix result;
+
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			for (int k = 0; k < 3; k++) {
+				result.m[i][j] += this->m[i][k] * m.m[k][j];
+			}
+		}
+	}
+	return result;
+}
 
 Matrix Translate(const Vector &p)
 {

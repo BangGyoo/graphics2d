@@ -9,6 +9,7 @@ public :
 	float y;
 	Point(float x=0, float y=0);
 };
+typedef Point Vector;				// 차후 교수님 코드와의 확장성 때문에 벡터 타입은 기존과 통일
 class Line {
 	Point start;
 	Point end;
@@ -25,6 +26,8 @@ public:
 			}
 		}
 	}
+	Vector operator*(Vector &point);
+	Matrix operator*(Matrix &m);
 };
 class Color {
 	
@@ -34,13 +37,7 @@ public:
 	unsigned char b;
 	Color(unsigned char r=0, unsigned char g=0, unsigned char b=0);
 };
-class Vector : public Point {
-public :
-	Vector(float x=0, float y=0){
-		this->x = x;
-		this->y = y;
-	};
-};
+
 
 
 void drawVLine(int x0, int y0, int x1, int y1, Color c);

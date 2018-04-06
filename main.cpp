@@ -74,11 +74,11 @@ void render(void)
 	mRotate = Rotate(0.0f * DEG_TO_RAD);
 	mTranslate = Translate(pTranslate);
 
-	Matrix result = matmatMul(mTranslate, mRotate);
-	result = matmatMul(result, mScale);
+	Matrix result = mTranslate * mRotate;
+	result = result * mScale;
 
-	points[0] = matpoiMul(result, pCross[0]); points[1] = matpoiMul(result, pCross[1]);
-	points[2] = matpoiMul(result, pCross[2]); points[3] = matpoiMul(result, pCross[3]);
+	points[0] = result * pCross[0]; points[1] = result * pCross[1];
+	points[2] = result * pCross[2]; points[3] = result * pCross[3];
 
 	points[0] = CameraToViewport(points[0]); points[1] = CameraToViewport(points[1]);
 	points[2] = CameraToViewport(points[2]); points[3] = CameraToViewport(points[3]);
@@ -97,13 +97,13 @@ void render(void)
 	mRotate = Rotate(ang2 * DEG_TO_RAD);
 	mTranslate = Translate(pTranslate);
 
-	result = matmatMul(mTranslate, mRotate);
-	result = matmatMul(result, mScale);
+	result = mTranslate * mRotate;
+	result = result * mScale;
 
-	points[0] = matpoiMul(result, pSquare[0]);
-	points[1] = matpoiMul(result, pSquare[1]);
-	points[2] = matpoiMul(result, pSquare[2]);
-	points[3] = matpoiMul(result, pSquare[3]);
+	points[0] = result * pSquare[0];
+	points[1] = result * pSquare[1];
+	points[2] = result * pSquare[2];
+	points[3] = result * pSquare[3];
 
 	points[0] = CameraToViewport(points[0]);
 	points[1] = CameraToViewport(points[1]);
@@ -125,12 +125,12 @@ void render(void)
 	mRotate = Rotate(ang3 * DEG_TO_RAD);
 	mTranslate = Translate(pTranslate);
 
-	result = matmatMul(mTranslate, mRotate);
-	result = matmatMul(result, mScale);
+	result = mTranslate * mRotate;
+	result = result * mScale;
 
-	points[0] = matpoiMul(result, pTriangle[0]);
-	points[1] = matpoiMul(result, pTriangle[1]);
-	points[2] = matpoiMul(result, pTriangle[2]);
+	points[0] = result * pTriangle[0];
+	points[1] = result * pTriangle[1];
+	points[2] = result * pTriangle[2];
 
 	points[0] = CameraToViewport(points[0]);
 	points[1] = CameraToViewport(points[1]);
@@ -153,9 +153,9 @@ void render(void)
 	result = matmatMul(mTranslate, mRotate);
 	result = matmatMul(result, mScale);
 
-	points[0] = matpoiMul(result, pTriangle[0]);
-	points[1] = matpoiMul(result, pTriangle[1]);
-	points[2] = matpoiMul(result, pTriangle[2]);
+	points[0] = result * pTriangle[0];
+	points[1] = result * pTriangle[1];
+	points[2] = result * pTriangle[2];
 
 	points[0] = CameraToViewport(points[0]);
 	points[1] = CameraToViewport(points[1]);
@@ -175,13 +175,13 @@ void render(void)
 	mRotate = Rotate(ang5 * DEG_TO_RAD);
 	mTranslate = Translate(pTranslate);
 
-	result = matmatMul(mTranslate, mRotate);
-	result = matmatMul(result, mScale);
+	result = mTranslate * mRotate;
+	result = result * mScale;
 
-	points[0] = matpoiMul(result, pSquare[0]);
-	points[1] = matpoiMul(result, pSquare[1]);
-	points[2] = matpoiMul(result, pSquare[2]);
-	points[3] = matpoiMul(result, pSquare[3]);
+	points[0] = result * pSquare[0];
+	points[1] = result * pSquare[1];
+	points[2] = result * pSquare[2];
+	points[3] = result * pSquare[3];
 
 	points[0] = CameraToViewport(points[0]);
 	points[1] = CameraToViewport(points[1]);
