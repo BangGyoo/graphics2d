@@ -1,3 +1,6 @@
-﻿  main.cpp
+﻿  Shape.cpp
+  Utilities.cpp
+  main.cpp
 c:\users\bq\desktop\재학,취업,공모전\그래픽스_과제\templategraphics\templategraphics\templategraphics\main.cpp(48): warning C4060: switch문에 'case' 또는 'default' 레이블이 없습니다.
+  코드를 생성하고 있습니다...
   TemplateGraphics.vcxproj -> C:\Users\BQ\Desktop\재학,취업,공모전\그래픽스_과제\TemplateGraphics\TemplateGraphics\Debug\TemplateGraphics.exe

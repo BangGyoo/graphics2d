@@ -127,19 +127,27 @@ void DrawLine(Point start, Point end, Color c) {
 	}
 }
 
+Matrix::Matrix(){
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			this->m[i][j] = 0;
+		}
+	}
+}
+
 Matrix::Matrix(TransformMat setting, float args_1, float args_2) {
 	Vector xy;
 
 	switch (setting) {
-	case scale :
+	case SCALE :
 		xy.x = args_1; xy.y = args_2;
 		*this = Scale(xy);
 		break;
-	case translate:
+	case TRANSLATE:
 		xy.x = args_1; xy.y = args_2;
 		*this = Translate(xy);
 		break;
-	case normal:
+	case NORMAL:
 		break;
 	}
 }
@@ -147,10 +155,10 @@ Matrix::Matrix(TransformMat setting, float args) {
 	Vector xy;
 
 	switch (setting) {
-	case rotate:
+	case ROTATE:
 		*this = Rotate(args);
 		break;
-	case normal:
+	case NORMAL:
 		break;
 	}
 }
@@ -158,10 +166,10 @@ Matrix::Matrix(TransformMat setting, float args) {
 Matrix::Matrix(TransformMat setting, Point args) {
 
 	switch (setting) {
-	case scale :
+	case SCALE :
 		*this = Scale(args);
 		break;
-	case translate :
+	case TRANSLATE :
 		*this = Translate(args);
 		break;
 	}
@@ -191,6 +199,16 @@ Matrix Matrix::operator*(Matrix &m) {
 		}
 	}
 	return result;
+}
+
+ShapeX Matrix::operator*(ShapeX x){
+
+	x.vertex[ShapeX::LEFT_TOP] = (*this) * x.vertex[ShapeX::LEFT_TOP];				// There is that overload mat * point.
+	x.vertex[ShapeX::RIGHT_TOP] = (*this) * x.vertex[ShapeX::RIGHT_TOP];
+	x.vertex[ShapeX::LEFT_BOTTOM] = (*this) * x.vertex[ShapeX::LEFT_BOTTOM];
+	x.vertex[ShapeX::RIGHT_BOTTOM] = (*this) * x.vertex[ShapeX::RIGHT_BOTTOM];
+	
+	return x;
 }
 
 Matrix Translate(const Vector &p)
@@ -247,9 +265,20 @@ Matrix matmatMul(const Matrix &m1, const Matrix &m2)
 			}
 		}
 	}
-
 	return result;
 }
+
+ShapeX::ShapeX(Point leftTop, Point leftBottom, Point rightBottom, Point rightTop) {
+	this->vertex[LEFT_TOP]     = leftTop;
+	this->vertex[LEFT_BOTTOM]  = leftBottom;
+	this->vertex[RIGHT_TOP] = rightTop;
+	this->vertex[RIGHT_BOTTOM] = rightBottom;
+}
+void ShapeX::drawShapeX(Color c) {
+	DrawLine(this->vertex[ShapeX::LEFT_TOP], this->vertex[ShapeX::RIGHT_BOTTOM], c);
+	DrawLine(this->vertex[ShapeX::RIGHT_TOP], this->vertex[ShapeX::LEFT_BOTTOM], c);
+}
+
 Vector CameraToViewport(Point point) {		// 뷰포트로 변경
 	float viewportPointX, viewportPointY;
 
@@ -259,4 +288,10 @@ Vector CameraToViewport(Point point) {		// 뷰포트로 변경
 
 	/////
 }
-
+ShapeX CameraToViewport(ShapeX x) {
+	x.vertex[ShapeX::LEFT_TOP] = CameraToViewport(x.vertex[ShapeX::LEFT_TOP]);
+	x.vertex[ShapeX::RIGHT_TOP] = CameraToViewport(x.vertex[ShapeX::RIGHT_TOP]);
+	x.vertex[ShapeX::LEFT_BOTTOM] = CameraToViewport(x.vertex[ShapeX::LEFT_BOTTOM]);
+	x.vertex[ShapeX::RIGHT_BOTTOM] = CameraToViewport(x.vertex[ShapeX::RIGHT_BOTTOM]);
+	return x;
+}

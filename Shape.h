@@ -1,7 +1,11 @@
 #pragma once
 #include "Utilities.h"
 
-
+class Point;
+class Line;
+class Matrix;
+class ShapeX;
+class Color;
 
 class Point {
 public :
@@ -19,20 +23,14 @@ class Line {
 class Matrix {
 public:
 	enum TransformMat {
-		normal,
-		scale,
-		rotate,
-		translate
+		NORMAL,
+		SCALE,
+		ROTATE,
+		TRANSLATE
 	};
 
 	float m[3][3];
-	Matrix() {
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				this->m[i][j] = 0;
-			}
-		}
-	}
+	Matrix();
 	Matrix(TransformMat setting, float args_1, float args_2);
 	Matrix(TransformMat setting, float args);
 	Matrix(TransformMat setting, Point args);
@@ -40,7 +38,26 @@ public:
 
 	Vector operator*(Vector &point);
 	Matrix operator*(Matrix &m);
+	ShapeX operator*(ShapeX x);
 };
+
+class ShapeX {
+public :
+	enum PointPos {
+		LEFT_TOP,
+		LEFT_BOTTOM,
+		RIGHT_BOTTOM,
+		RIGHT_TOP
+	};
+	Point vertex[4];
+
+	ShapeX(Point leftTop, Point leftBottom, Point rightBottom, Point rightTop);
+	void drawShapeX(Color c);
+};
+
+class Triangle;
+class Square;
+
 class Color {
 	
 public:
@@ -49,7 +66,6 @@ public:
 	unsigned char b;
 	Color(unsigned char r=0, unsigned char g=0, unsigned char b=0);
 };
-
 
 
 void drawVLine(int x0, int y0, int x1, int y1, Color c);
@@ -63,3 +79,4 @@ Matrix Rotate(const float &alpha);
 Vector matpoiMul(const Matrix &m, const Point &p);
 Matrix matmatMul(const Matrix &m1, const Matrix &m2);
 Vector CameraToViewport(Point point);
+ShapeX CameraToViewport(ShapeX x);
